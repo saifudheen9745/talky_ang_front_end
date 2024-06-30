@@ -1,3 +1,19 @@
 @tailwind base;
+
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  @apply w-1;
+}
+
+*::-webkit-scrollbar-track {
+  @apply bg-gray-200 text-gray-500;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply bg-gray-400 rounded-lg;
+}
+
+
 @tailwind components;
 @tailwind utilities;
