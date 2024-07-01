@@ -1,11 +1,16 @@
 <div class="w-full h-screen flex justify-center items-center">
   <div class="shadow-lg rounded-lg p-5 flex flex-col gap-5 py-10">
     <p class="text-center text-3xl font-medium text-blue-600">Talky</p>
-    <form class="flex flex-col gap-5">
-      <input type="text" class="w-72 h-8 outline-none rounded-lg border border-gray-300 px-4" placeholder="Username">
-      <input type="text" class="w-72 h-8 outline-none rounded-lg border border-gray-300 px-4" placeholder="Email">
-      <input type="password" class="w-72 h-8 outline-none rounded-lg border border-gray-300 px-4" placeholder="Password">
+    <form [formGroup]="registerForm" class="flex flex-col gap-5" (ngSubmit)="onRegisterSubmit()">
+      <input type="text" name="name" formControlName="name" class="w-72 h-8 outline-none rounded-lg border border-gray-300 px-4" placeholder="Name">
+      <input type="text" name="email" formControlName="email" class="w-72 h-8 outline-none rounded-lg border border-gray-300 px-4" placeholder="Email">
+      <input type="password" name="password" formControlName="password" class="w-72 h-8 outline-none rounded-lg border border-gray-300 px-4" placeholder="Password">
       <input type="submit" class="py-2 bg-blue-500 text-white rounded-lg ">
+      @if(registerFormError){
+        <div class="text-sm text-red-500 flex items-center justify-center gap-1">
+          <p class="font-semibold">All fields are required.</p>
+        </div>
+      }
     </form>
     <div class="text-sm text-blue-500 flex items-center justify-center gap-1">
       <p>Already have an account? </p>

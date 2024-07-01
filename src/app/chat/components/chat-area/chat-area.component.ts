@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { SharedService } from '../../services/shared.service';
+import { Subscription } from 'rxjs';
+import { IUserData } from '../../models/chat.model';
 
 @Component({
   standalone:true,
@@ -8,9 +11,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatAreaComponent implements OnInit {
 
-  constructor() { }
+  private sharedService = inject(SharedService);
 
+  subscriptions:Subscription[] = [];
+  selectedUserToChat:IUserData = {} as IUserData;
+  shortName:string = '';
+  
   ngOnInit() {
+    this.listenForListClick();
+  }
+
+  backButtonClick(){
+    this.sharedService.toggleListAndChat.next({chat:false,list:true})
+  }
+
+  listenForListClick(){
+    this.subscriptions.push(
+      this.sharedService.toggleListAndChat.subscribe((res) => {
+        if(res.data){
+          this.selectedUserToChat = res.data;
+        }
+      })
+    );
   }
 
 }

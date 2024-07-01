@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { SharedService } from '../../services/shared.service';
+import { IUserData } from '../../models/chat.model';
 
 @Component({
   standalone:true,
@@ -8,11 +10,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChatListComponent implements OnInit {
 
-  constructor() { }
-
-  // sampleUsers = []
+  private sharedService = inject(SharedService);
 
   ngOnInit() {
+  }
+
+  listItemClick(user:IUserData){
+    this.sharedService.toggleListAndChat.next({chat:true, list:false, data:user});
   }
 
 }
