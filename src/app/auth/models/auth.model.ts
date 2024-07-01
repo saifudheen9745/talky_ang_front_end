@@ -13,6 +13,7 @@ export interface ILoginRes {
   token:string;
   name:string;
   email:string;
+  id:string;
 }
 
 export type IRegisterPayload = ILoginPayload & {

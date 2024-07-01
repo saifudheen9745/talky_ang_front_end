@@ -26,6 +26,7 @@ export class AuthService {
             this.localStorageService.setItem('userToken',res.data[0].token);
             this.localStorageService.setItem('userName',res.data[0].name);
             this.localStorageService.setItem('email',res.data[0].email);
+            this.localStorageService.setItem('userId',res.data[0].id);
             this.router.navigate(['/chat/index']);
           }
         },

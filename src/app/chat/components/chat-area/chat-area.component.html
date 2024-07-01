@@ -3,8 +3,8 @@
     <button (click)="backButtonClick()">
       <img class="h-6 md:hidden"  src="/assets/icons/back.png" alt="">
     </button>
-    <div class="w-10 h-10 bg-yellow-700 rounded-full">{{shortName}}</div>
-    <p class="text-xl text-gray-500 font font-medium">{{selectedUserToChat.name}}</p>
+    <div class="w-10 h-10 bg-yellow-700 rounded-full flex justify-center items-center font-bold text-xl text-gray-200">{{selectedUserToChat?.name?.slice(0,2)?.toUpperCase() }}</div>
+    <p class="text-xl text-gray-500 font font-medium">{{selectedUserToChat?.name}}</p>
   </div>
   <div class="w-full h-full py-5 px-10 xl:px-44">
     <div class="w-full h-[90%] rounded-md bg-gray-200 overflow-y-auto p-5">
@@ -48,7 +48,7 @@
     </div>
   </div>
   <div class="absolute bottom-2 w-full flex gap-2 px-10 xl:px-44">
-    <input type="text" placeholder="Enter Message" class="w-full outline-none bg-gray-200 rounded-md px-4 py-2">
-    <button class="bg-green-600 px-10 py-2 rounded-md text-white">Send</button>
+    <input [(ngModel)]="message" type="text" placeholder="Enter Message" class="w-full outline-none bg-gray-200 rounded-md px-4 py-2">
+    <button (click)="sendMessage()" class="bg-green-600 px-10 py-2 rounded-md text-white">Send</button>
   </div>
 </div>

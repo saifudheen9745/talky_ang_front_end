@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { LocalStorageService } from '../../services/local-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone:true,
@@ -8,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor() { }
+  private localStorageService = inject(LocalStorageService);
+  private router = inject(Router);
 
   ngOnInit() {
+  }
+
+  logout(){
+    this.localStorageService.clearLocalStorage();
+    this.router.navigate(['/auth/login']);
   }
 
 }
