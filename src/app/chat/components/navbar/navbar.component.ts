@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  private localStorageService = inject(LocalStorageService);
+  public localStorageService = inject(LocalStorageService);
   private router = inject(Router);
 
   ngOnInit() {

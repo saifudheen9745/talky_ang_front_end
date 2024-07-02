@@ -3,6 +3,7 @@ import { Injectable, OnDestroy, OnInit, inject, signal } from "@angular/core";
 import { ChatRepository } from "../repositories/chat.respository";
 import { ICreateRoomPaylod, IUserData } from "../models/chat.model";
 import { LocalStorageService } from './local-storage.service';
+import { WebSocketService } from './web-socket.service';
 
 @Injectable({
   providedIn:'root'
@@ -12,6 +13,7 @@ export class ChatService implements OnDestroy{
   
   private chatRepo = inject(ChatRepository);
   private localStorageService = inject(LocalStorageService);
+  private webSocketService = inject(WebSocketService);
 
   private subscriptions:Subscription[] = [];
   public usersList = signal<IUserData[]>([]);
@@ -38,6 +40,7 @@ export class ChatService implements OnDestroy{
         next:(res) => {
           if(res.success){
             this.currentChatRoom.next(res.data[0].roomId);
+            this.webSocketService.enterARoom(res.data[0].roomId);
           }
         },
         error:(err) => {
