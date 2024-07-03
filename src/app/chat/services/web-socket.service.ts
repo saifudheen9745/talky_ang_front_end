@@ -7,30 +7,29 @@ import { Client, Message } from '@stomp/stompjs';
   providedIn: 'root'
 })
 export class WebSocketService {
-  private stompClient: Client;
+  public stompClient: Client;
 
   constructor() {
     this.initializeWebSocketConnection();
   }
 
   initializeWebSocketConnection() {
-    const webSocketUrl = 'ws://localhost:8080/ws';  // Replace with your WebSocket endpoint
+    const webSocketUrl = 'ws://localhost:8080/ws';
 
     this.stompClient = new Client({
       brokerURL: webSocketUrl,
       connectHeaders: {
-        // Optionally add headers here
+        
       },
       debug: (str) => {
       },
-      reconnectDelay: 5000,  // Automatically reconnect after 5 seconds
-      heartbeatIncoming: 4000,  // Heartbeat every 4 seconds
-      heartbeatOutgoing: 4000,  // Heartbeat every 4 seconds
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
     });
 
-    // this.stompClient.onConnect = (frame) => {
-    //   console.log('Connected: ' + frame);
-    // };
+    this.stompClient.onConnect = (frame) => {
+    };
 
     this.stompClient.onStompError = (frame) => {
       console.error('Broker reported error: ' + frame.headers['message']);
@@ -41,6 +40,7 @@ export class WebSocketService {
   }
 
   enterARoom(roomId:string){    
+    console.log("listening for messages....")
     this.stompClient.subscribe(`/room/${roomId}`, (message: Message) => {
       this.onMessageReceived(message);
     });
