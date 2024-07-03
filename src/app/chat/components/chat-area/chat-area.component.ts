@@ -17,8 +17,8 @@ import { WebSocketService } from '../../services/web-socket.service';
 export class ChatAreaComponent implements OnInit, OnDestroy {
 
   private sharedService = inject(SharedService);
-  private localStorageService = inject(LocalStorageService);
-  private chatService = inject(ChatService);
+  public localStorageService = inject(LocalStorageService);
+  public chatService = inject(ChatService);
   private webSocketService = inject(WebSocketService);
 
   subscriptions:Subscription[] = [];
@@ -31,7 +31,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.setSelectedChatFromLocalStorage();
     this.listenForListClick();    
     this.listenForChatRommUpdate();
-    this.getRoomId();
+    setTimeout(() => {
+      this.getRoomId();
+    },200)
   }
 
   getRoomId(){
@@ -77,14 +79,14 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   sendMessage(){
     const newMessage:IChatMessage = {
       date:Date.now(),
-      from:this.localStorageService.getItem('userId'),
-      to:this.selectedUserToChat.id,
+      msgFrom:this.localStorageService.getItem('userId'),
+      msgTo:this.selectedUserToChat.id,
       message:this.message,
       room:this.chatService.currentChatRoom.getValue()
     }
     
-    this.webSocketService.sendMessage(this.message,this.chatService.currentChatRoom.getValue());
-    
+    this.webSocketService.sendMessage(newMessage,this.chatService.currentChatRoom.getValue());
+    this.message = ''
   }
 
   ngOnDestroy(): void {

@@ -3,7 +3,7 @@ import { Injectable, inject } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { IApiRes } from "../../auth/models/auth.model";
-import { ICreateRoomPaylod, IUserData } from "../models/chat.model";
+import { IChatMessage, IChatMessageResponse, ICreateRoomPaylod, IUserData } from "../models/chat.model";
 
 @Injectable({
   providedIn:'root'
@@ -21,6 +21,10 @@ export class ChatRepository {
 
   createARoom(users:ICreateRoomPaylod):Observable<IApiRes<{roomId:string}[]>>{
     return this.http.post<IApiRes<{roomId:string}[]>>(`${this.baseUrl}/user/room`,users);
+  }
+
+  getAllMessages(memberA:string,memberB:string):Observable<IApiRes<IChatMessageResponse[]>>{
+    return this.http.get<IApiRes<IChatMessageResponse[]>>(`${this.baseUrl}/user/messages?memberA=${memberA}&memberB=${memberB}`);
   }
 
 }

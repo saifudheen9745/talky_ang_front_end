@@ -1,4 +1,4 @@
-<div class="w-full h-full flex">
+<div class="relative w-full h-full flex">
   @if(mode === 'list' || mode === 'both'){
     <div [ngClass]="{'w-full !block':mode === 'list'}" class="w-1/6 min-w-72 hidden md:block"><app-chat-list></app-chat-list></div>
   }

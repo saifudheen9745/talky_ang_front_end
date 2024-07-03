@@ -7,9 +7,13 @@ export interface IUserData {
 export interface IChatMessage {
   room:string;
   message:string;
-  from:string;
-  to:string;
+  msgFrom:string;
+  msgTo:string;
   date:number;
+}
+
+export type IChatMessageResponse = IChatMessage & {
+  id:number;
 }
 
 export interface ICreateRoomPaylod {

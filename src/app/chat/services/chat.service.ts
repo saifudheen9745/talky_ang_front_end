@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy, OnInit, inject, signal } from "@angular/core";
 import { ChatRepository } from "../repositories/chat.respository";
-import { ICreateRoomPaylod, IUserData } from "../models/chat.model";
+import { IChatMessage, IChatMessageResponse, ICreateRoomPaylod, IUserData } from "../models/chat.model";
 import { LocalStorageService } from './local-storage.service';
 import { WebSocketService } from './web-socket.service';
 import { SharedService } from './shared.service';
@@ -19,6 +19,7 @@ export class ChatService implements OnDestroy{
   private subscriptions:Subscription[] = [];
   public usersList = signal<IUserData[]>([]);
   public currentChatRoom = new BehaviorSubject<string>('');
+  public chatMessages = signal<IChatMessageResponse[]>([]);
 
   /**
    * @description This method will fetch all users registered on the site for chatting.
@@ -30,10 +31,11 @@ export class ChatService implements OnDestroy{
       this.chatRepo.getAllUsers().subscribe({
         next:(res) => {
           if(res.success){
-            this.usersList.set(res.data.filter(user => user.id.toString() !== this.localStorageService.getItem('userId')));
-            if(!(this.localStorageService.getItem("selectedChat") as IUserData).id){
+            this.usersList.set(res.data.filter(user => user.id.toString() !== this.localStorageService.getItem('userId')));            
+            if(!(this.localStorageService.getItem("selectedChat") as IUserData)?.id){
               this.sharedService.selectedChat.next(this.usersList()[0]);
               this.localStorageService.setItem("selectedChat",this.usersList()[0]);
+              this.getChatMessages(this.usersList()[0].id,this.localStorageService.getItem('userId'));
             }
           }
         },
@@ -60,6 +62,23 @@ export class ChatService implements OnDestroy{
         },
         error:(err) => {
           console.log(err);
+        }
+      })
+    );
+  }
+
+  getChatMessages(memberA:string,memberB:string){
+    this.subscriptions.push(
+      this.chatRepo.getAllMessages(memberA,memberB).subscribe({
+        next:(res) => {
+          if(res.success){
+            this.chatMessages.set(res.data);
+          }
+        },
+        error:(err) => {
+          if(err.error.message === "No messages found"){
+            this.chatMessages.set([])
+          };
         }
       })
     );

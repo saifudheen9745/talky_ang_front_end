@@ -7,45 +7,32 @@
     <p class="text-xl text-gray-500 font font-medium">{{selectedUserToChat?.name}}</p>
   </div>
   <div class="w-full h-full py-5 px-10 xl:px-44">
-    <div class="w-full h-[90%] rounded-md bg-gray-200 overflow-y-auto p-5">
-      <div class="w-full flex justify-start">
-        <div class="max-w-[90%] lg:max-w-[70%] p-3 flex gap-3" >
-          <div class="w-8 h-8 rounded-full bg-red-400"></div>
-          <div class="w-full flex-wrap bg-gray-100 min-h-12 rounded-bl-2xl rounded-tr-2xl p-4  flex justify-center items-center ">
-            <p class="">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur officia voluptates et ex ipsum rem exercitationem vitae voluptatem ad. Pariatur, ullam. Molestias quas perspiciatis eius expedita quasi, quod ipsum est.
-            Cumque voluptates in assumenda autem illum laboriosam laudantium vero eveniet tempore voluptatum perferendis, excepturi dolor qui ea nam incidunt ratione iste consequuntur laborum? Voluptatibus illum ratione numquam id eaque odio.</p>
+    <div  class="w-full h-[90%] rounded-md bg-gray-200 overflow-y-auto p-5">
+      @for (message of chatService.chatMessages(); track message.id) {
+        @if(message.msgFrom === localStorageService.getItem('userId')){
+
+          <div class="w-full flex justify-end ">
+            <div class="max-w-[90%] p-3 lg:max-w-[70%] flex gap-3" >
+            <div class="w-full flex-wrap bg-gray-100 min-h-12 rounded-br-2xl rounded-tl-2xl px-4 flex justify-center items-center ">
+              <p class="">{{message.message}}</p>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-red-400"></div>
+            </div>
           </div>
-        </div>
+        }@else {
+          
+
+          <div class="w-full flex justify-start">
+            <div class="max-w-[90%] lg:max-w-[70%] p-3 flex gap-3" >
+              <div class="w-8 h-8 rounded-full bg-red-400"></div>
+              <div class="w-full flex-wrap bg-gray-100 min-h-12 rounded-bl-2xl rounded-tr-2xl p-4  flex justify-center items-center ">
+                <p class="">{{message.message}}</p>
+              </div>
+            </div>
+           </div>
+        }
+        }
       </div>
-      <div class="w-full flex justify-end ">
-        <div class="max-w-[90%] p-3 lg:max-w-[70%] flex gap-3" >
-          <div class="w-full flex-wrap bg-gray-100 min-h-12 rounded-br-2xl rounded-tl-2xl px-4 flex justify-center items-center ">
-            <p class="">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur officia voluptates et ex ipsum rem exercitationem vitae voluptatem ad. Pariatur, ullam. Molestias quas perspiciatis eius expedita quasi, quod ipsum est.
-              Cumque voluptates in assumenda autem illum laboriosam laudantium vero eveniet tempore voluptatum perferendis, excepturi dolor qui ea nam incidunt ratione iste consequuntur laborum? Voluptatibus illum ratione numquam id eaque odio.</p>
-          </div>
-          <div class="w-8 h-8 rounded-full bg-red-400"></div>
-        </div>
-      </div>
-      <div class="w-full flex justify-start">
-        <div class="max-w-[90%] lg:max-w-[70%] p-3 flex gap-3" >
-          <div class="w-8 h-8 rounded-full bg-red-400"></div>
-          <div class="w-full flex-wrap bg-gray-100 min-h-12 rounded-bl-2xl rounded-tr-2xl p-4  flex justify-center items-center ">
-            <p class="">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur officia voluptates et ex ipsum rem exercitationem vitae voluptatem ad. Pariatur, ullam. Molestias quas perspiciatis eius expedita quasi, quod ipsum est.
-            Cumque voluptates in assumenda autem illum laboriosam laudantium vero eveniet tempore voluptatum perferendis, excepturi dolor qui ea nam incidunt ratione iste consequuntur laborum? Voluptatibus illum ratione numquam id eaque odio.</p>
-          </div>
-        </div>
-      </div>
-      <div class="w-full flex justify-end ">
-        <div class="max-w-[90%] p-3 lg:max-w-[70%] flex gap-3" >
-          <div class="w-full flex-wrap bg-gray-100 min-h-12 rounded-br-2xl rounded-tl-2xl px-4 flex justify-center items-center ">
-            <p class="">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur officia voluptates et ex ipsum rem exercitationem vitae voluptatem ad. Pariatur, ullam. Molestias quas perspiciatis eius expedita quasi, quod ipsum est.
-              Cumque voluptates in assumenda autem illum laboriosam laudantium vero eveniet tempore voluptatum perferendis, excepturi dolor qui ea nam incidunt ratione iste consequuntur laborum? Voluptatibus illum ratione numquam id eaque odio.</p>
-          </div>
-          <div class="w-8 h-8 rounded-full bg-red-400"></div>
-        </div>
-      </div>
-      
-    </div>
   </div>
   <div class="absolute bottom-2 w-full flex gap-2 px-10 xl:px-44">
     <input [(ngModel)]="message" type="text" placeholder="Enter Message" class="w-full outline-none bg-gray-200 rounded-md px-4 py-2">

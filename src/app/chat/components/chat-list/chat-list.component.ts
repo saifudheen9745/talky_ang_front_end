@@ -14,9 +14,9 @@ import { CommonModule } from '@angular/common';
 })
 export class ChatListComponent implements OnInit {
 
-  private sharedService = inject(SharedService);
+  public sharedService = inject(SharedService);
   public chatService = inject(ChatService);
-  private localStorageService = inject(LocalStorageService);
+  public localStorageService = inject(LocalStorageService);
 
   ngOnInit() {
     if(window.innerWidth > 768){
@@ -40,6 +40,7 @@ export class ChatListComponent implements OnInit {
       this.chatService.currentChatRoom.next('');
       this.localStorageService.setItem('selectedChat',user);
       this.sharedService.selectedChat.next(user);
+      this.chatService.getChatMessages(user.id, this.localStorageService.getItem('userId'));
     }
   }
 

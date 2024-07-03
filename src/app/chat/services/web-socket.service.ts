@@ -1,7 +1,11 @@
 // src/app/services/websocket.service.ts
 
-import { Injectable } from '@angular/core';
-import { Client, Message } from '@stomp/stompjs';
+import { Injectable, inject } from '@angular/core';
+import { Client, IMessage, Message, StompSubscription } from '@stomp/stompjs';
+import { IChatMessage, IChatMessageResponse } from '../models/chat.model';
+import { ChatService } from './chat.service';
+import { LocalStorageService } from './local-storage.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +13,14 @@ import { Client, Message } from '@stomp/stompjs';
 export class WebSocketService {
   public stompClient: Client;
 
+  subscriptions:StompSubscription[] = [];
+
+  private chatService = inject(ChatService);
+  private localStorageService = inject(LocalStorageService);
+
   constructor() {
     this.initializeWebSocketConnection();
+    this.localStorageService.setItem('rooms',{});
   }
 
   initializeWebSocketConnection() {
@@ -39,21 +49,25 @@ export class WebSocketService {
     this.stompClient.activate();
   }
 
-  enterARoom(roomId:string){    
-    console.log("listening for messages....")
-    this.stompClient.subscribe(`/room/${roomId}`, (message: Message) => {
-      this.onMessageReceived(message);
-    });
+  enterARoom(roomId:string){
+    if(this.subscriptions.length){
+      this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+    this.subscriptions.push(
+      this.stompClient.subscribe(`/room/${roomId}`, (message: Message) => {
+        this.onMessageReceived(JSON.parse(message.body));
+      })
+    );
   }
 
-  onMessageReceived(message: Message) {
-    console.log('Received: ' + message.body);
+  onMessageReceived(message: IChatMessageResponse) {
+    this.chatService.chatMessages.set([...this.chatService.chatMessages(),message]);
   }
 
-  sendMessage(message: string, roomId:string) {
+  sendMessage(message: IChatMessage, roomId:string) {
     this.stompClient.publish({
       destination: `/app/chat/${roomId}/sendMessage`,
-      body: message
+      body: JSON.stringify(message)
     });
   }
 }
