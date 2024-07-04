@@ -6,13 +6,14 @@ import { LocalStorageService } from '../../services/local-storage.service';
 import { ChatService } from '../../services/chat.service';
 import { FormsModule } from '@angular/forms';
 import { WebSocketService } from '../../services/web-socket.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   standalone:true,
   selector: 'app-chat-area',
   templateUrl: './chat-area.component.html',
   styleUrls: ['./chat-area.component.scss'],
-  imports:[FormsModule]
+  imports:[FormsModule, DatePipe]
 })
 export class ChatAreaComponent implements OnInit,AfterViewChecked, OnDestroy {
 

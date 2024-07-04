@@ -18,5 +18,9 @@ export type IChatMessageResponse = IChatMessage & {
 
 export interface ICreateRoomPaylod {
   memberA:number;
-  memberB:number
+  memberB:number;
+}
+
+export interface INotificatioinData {
+  [key:string]:number;
 }

@@ -1,7 +1,7 @@
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Injectable, OnDestroy, OnInit, inject, signal } from "@angular/core";
 import { ChatRepository } from "../repositories/chat.respository";
-import { IChatMessage, IChatMessageResponse, ICreateRoomPaylod, IUserData } from "../models/chat.model";
+import { IChatMessage, IChatMessageResponse, ICreateRoomPaylod, INotificatioinData, IUserData } from "../models/chat.model";
 import { LocalStorageService } from './local-storage.service';
 import { WebSocketService } from './web-socket.service';
 import { SharedService } from './shared.service';
@@ -20,6 +20,7 @@ export class ChatService implements OnDestroy{
   public usersList = signal<IUserData[]>([]);
   public currentChatRoom = new BehaviorSubject<string>('');
   public chatMessages = signal<IChatMessageResponse[]>([]);
+  public notifications = signal<INotificatioinData>({});
 
   /**
    * @description This method will fetch all users registered on the site for chatting.

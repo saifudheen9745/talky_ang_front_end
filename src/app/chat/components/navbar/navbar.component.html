@@ -1,7 +1,7 @@
 <div class="w-full h-16 bg-gray-300 flex pt-2 px-5 justify-between">
   <p class="text-3xl font-bold text-gray-600">Talky</p>
   <div class="flex gap-5">
-    <p>
+    <p class="text-2xl bg-gray-200 px-10 h-10 rounded-lg flex justify-center items-center font-semibold"> 
       {{localStorageService.getItem("userName")}}
     </p>
     <button (click)="logout()" class="bg-red-500 text-white px-10 h-10 rounded-md flex justify-center items-center">Logout</button>

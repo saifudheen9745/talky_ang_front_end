@@ -4,11 +4,13 @@
   </div>
   <div class="py-5 px-3 flex flex-col gap-1 pb-10 overflow-x-hidden overflow-y-auto h-[90%]"> 
     @for(user of chatService.usersList(); track user.id){
-      <button (click)="listItemClick(user)" class="w-full bg-gray-50 shadow-sm hover:bg-gray-200 hover:translate-x-2 hover:cursor-pointer transition-all duration-150 p-2 rounded-lg flex gap-5 items-center">
-        <div class="h-10 w-10 rounded-full bg-green-300 flex justify-center items-center font-bold">
-          {{user.name.slice(0,2).toUpperCase()}}
+      <button (click)="listItemClick(user)" class="w-full bg-gray-50 shadow-sm hover:bg-gray-200 hover:translate-x-2 hover:cursor-pointer transition-all duration-150 p-2 rounded-lg flex gap-5 justify-between items-center">
+        <div class="flex gap-5 items-center">
+          <div class="h-10 w-10 rounded-full bg-green-300 flex justify-center items-center font-bold">
+            {{user.name.slice(0,2).toUpperCase()}}
+          </div>
+          <p class="text-xl text-gray-500 font-medium">{{user.name}}</p>
         </div>
-        <p class="text-xl text-gray-500 font-medium">{{user.name}}</p>
       </button>
     }
   </div>
