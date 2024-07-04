@@ -14,6 +14,7 @@ export class WebSocketService {
   public stompClient: Client;
 
   subscriptions:StompSubscription[] = [];
+  roomsSubscribed:{[key:string]:StompSubscription} = {};
 
   private chatService = inject(ChatService);
   private localStorageService = inject(LocalStorageService);
@@ -50,14 +51,20 @@ export class WebSocketService {
   }
 
   enterARoom(roomId:string){
-    if(this.subscriptions.length){
-      this.subscriptions.forEach(sub => sub.unsubscribe());
+    if(this.roomsSubscribed[roomId]){
+      console.log('Already subscribed with room',roomId);
+      return;
     }
     this.subscriptions.push(
       this.stompClient.subscribe(`/room/${roomId}`, (message: Message) => {
         this.onMessageReceived(JSON.parse(message.body));
       })
     );
+    if(!this.roomsSubscribed[roomId]){
+      console.log('created new subscription with room',roomId);
+      
+      this.roomsSubscribed[roomId] = this.subscriptions[this.subscriptions.length - 1];
+    }
   }
 
   onMessageReceived(message: IChatMessageResponse) {

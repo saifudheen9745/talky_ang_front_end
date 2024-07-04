@@ -40,7 +40,6 @@ export class ChatListComponent implements OnInit {
       this.chatService.currentChatRoom.next('');
       this.localStorageService.setItem('selectedChat',user);
       this.sharedService.selectedChat.next(user);
-      this.chatService.getChatMessages(user.id, this.localStorageService.getItem('userId'));
     }
   }
 

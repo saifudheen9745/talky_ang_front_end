@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, computed, inject } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { SharedService } from '../../services/shared.service';
 import { Subscription } from 'rxjs';
 import { IChatMessage, ICreateRoomPaylod, IUserData } from '../../models/chat.model';
@@ -14,7 +14,9 @@ import { WebSocketService } from '../../services/web-socket.service';
   styleUrls: ['./chat-area.component.scss'],
   imports:[FormsModule]
 })
-export class ChatAreaComponent implements OnInit, OnDestroy {
+export class ChatAreaComponent implements OnInit,AfterViewChecked, OnDestroy {
+
+  @ViewChild("messageContainer") messageContainer: ElementRef<HTMLElement>;
 
   private sharedService = inject(SharedService);
   public localStorageService = inject(LocalStorageService);
@@ -33,8 +35,21 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.listenForChatRommUpdate();
     setTimeout(() => {
       this.getRoomId();
+      this.chatService.getChatMessages(this.selectedUserToChat.id, this.localStorageService.getItem('userId'));
     },200)
   }
+
+  ngAfterViewChecked(): void {
+      this.scrollToBottom();
+  }
+ 
+  private scrollToBottom(): void {
+    if (this.messageContainer) {
+      this.messageContainer.nativeElement.scrollTop =
+        this.messageContainer.nativeElement.scrollHeight;
+    }
+  }
+ 
 
   getRoomId(){
     const creatRoomPayload:ICreateRoomPaylod = {
@@ -48,7 +63,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.chatService.currentChatRoom.subscribe((res) => {
         if(this.webSocketService.stompClient.connected && res.length){
-          this.webSocketService.enterARoom(res)
+          this.webSocketService.enterARoom(res);
         }
       })
     );
@@ -70,6 +85,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
           this.selectedUserToChat = res;
           if(this.sharedService.toggleListAndChat.getValue().chat && this.sharedService.toggleListAndChat.getValue().list){
             this.getRoomId();
+            this.chatService.getChatMessages(this.selectedUserToChat.id, this.localStorageService.getItem('userId'));
           }
         }
       })
