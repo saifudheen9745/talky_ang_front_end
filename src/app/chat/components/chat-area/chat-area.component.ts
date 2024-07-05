@@ -70,10 +70,6 @@ export class ChatAreaComponent implements OnInit,AfterViewChecked, OnDestroy {
     );
   }
 
-  backButtonClick(){
-    this.sharedService.toggleListAndChat.next({chat:false,list:true})
-  }
-
   setSelectedChatFromLocalStorage(){
     this.selectedUserToChat = this.localStorageService.getItem("selectedChat"); 
   }
@@ -84,10 +80,8 @@ export class ChatAreaComponent implements OnInit,AfterViewChecked, OnDestroy {
         if(res?.id && (res?.id !== this.selectedUserToChat?.id)){
           this.localStorageService.setItem("selectedChat",res);
           this.selectedUserToChat = res;
-          if(this.sharedService.toggleListAndChat.getValue().chat && this.sharedService.toggleListAndChat.getValue().list){
-            this.getRoomId();
-            this.chatService.getChatMessages(this.selectedUserToChat.id, this.localStorageService.getItem('userId'));
-          }
+          this.getRoomId();
+          this.chatService.getChatMessages(this.selectedUserToChat.id, this.localStorageService.getItem('userId'));
         }
       })
     );

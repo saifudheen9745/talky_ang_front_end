@@ -1,8 +1,4 @@
-<div class="relative w-full h-full flex">
-  @if(mode === 'list' || mode === 'both'){
-    <div [ngClass]="{'w-full !block':mode === 'list'}" class="w-1/6 min-w-72 hidden md:block"><app-chat-list></app-chat-list></div>
-  }
-  @if(mode === 'chat' || mode === 'both'){
-    <div [ngClass]="{'w-full':mode === 'chat'}" class="w-full md:w-5/6"><app-chat-area></app-chat-area></div>
-  }
+<div class="w-full h-full flex">
+  <div  class="w-1/6 min-w-72 md:block"><app-chat-list></app-chat-list></div>
+  <div class="w-full md:w-5/6"><app-chat-area></app-chat-area></div>
 </div>
